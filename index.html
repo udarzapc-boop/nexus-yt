@@ -3,13 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER_STREAM // Stealth Relay Hub</title>
+    <title>CYBER_TUBE // Fixed Stream Hub</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
-    <!-- HLS.js for custom video stream playback -->
-    <script src="https://cdn.jsdelivr.net/npm/hls.js@latest"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@500;600;700&display=swap');
 
@@ -62,10 +60,10 @@
             <!-- Logo -->
             <div class="flex items-center gap-3 cursor-pointer" onclick="loadCategory('trending')">
                 <div class="p-2 bg-cyan-500/10 border border-cyan-400/30 rounded-xl text-cyan-400">
-                    <i data-lucide="shield-check" class="w-6 h-6"></i>
+                    <i data-lucide="play-circle" class="w-6 h-6"></i>
                 </div>
                 <span class="cyber-font font-bold text-xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
-                    STEALTH<span class="text-white">_STREAM</span>
+                    CYBER<span class="text-white">_TUBE</span>
                 </span>
             </div>
 
@@ -74,7 +72,7 @@
                 <input 
                     type="text" 
                     id="searchInput" 
-                    placeholder="Search videos (e.g. Sinhala songs, Lofi, Gaming)..." 
+                    placeholder="Search videos or paste YouTube link..." 
                     class="w-full bg-slate-950/90 border border-cyan-500/30 rounded-full py-2.5 pl-11 pr-24 text-sm text-cyan-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
                 >
                 <i data-lucide="search" class="w-5 h-5 absolute left-4 top-3 text-slate-400"></i>
@@ -83,10 +81,10 @@
                 </button>
             </form>
 
-            <!-- Manual ID Modal -->
+            <!-- Direct ID / Link Input Button -->
             <button onclick="openDirectModal()" class="hidden md:flex items-center gap-2 px-3 py-2 bg-pink-500/10 border border-pink-500/30 text-pink-400 rounded-xl text-xs font-semibold hover:bg-pink-500/20 transition-all">
-                <i data-lucide="link" class="w-4 h-4"></i>
-                Play Link/ID
+                <i data-lucide="plus-circle" class="w-4 h-4"></i>
+                Add Link
             </button>
         </div>
     </header>
@@ -94,7 +92,7 @@
     <!-- CATEGORY BAR -->
     <div class="bg-slate-950/60 border-b border-slate-800/80 px-4 py-3">
         <div class="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto no-scrollbar">
-            <button onclick="loadCategory('trending')" class="px-4 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-semibold whitespace-nowrap transition-all">⚡ Hot Streams</button>
+            <button onclick="loadCategory('trending')" class="px-4 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-semibold whitespace-nowrap transition-all">🔥 Trending</button>
             <button onclick="loadCategory('music')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎵 Music Tracks</button>
             <button onclick="loadCategory('gaming')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎮 Gaming Stream</button>
             <button onclick="loadCategory('livelyrics')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎧 Lo-Fi Beats</button>
@@ -105,31 +103,25 @@
     <!-- MAIN CONTAINER -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 space-y-6">
 
-        <!-- HTML5 CUSTOM NATIVE STREAM PLAYER (Bypasses iFrame & Domain Filters) -->
+        <!-- THEATER / PLAYER SECTION -->
         <section id="playerContainer" class="hidden space-y-4">
-            <div class="relative w-full aspect-video rounded-2xl overflow-hidden glass-panel border border-cyan-500/40 ambient-glow bg-black flex items-center justify-center">
-                <!-- Native HTML5 Video Element -->
-                <video 
-                    id="nativeVideoPlayer" 
-                    controls 
-                    autoplay 
-                    class="w-full h-full object-contain">
-                </video>
-                <!-- Player Loading Overlay -->
-                <div id="playerLoader" class="absolute inset-0 bg-slate-950/90 flex flex-col items-center justify-center space-y-3 z-10">
-                    <div class="w-10 h-10 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
-                    <p class="text-xs text-cyan-300 font-mono animate-pulse">DECRYPTING_STREAM_DATA...</p>
-                </div>
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden glass-panel border border-cyan-500/40 ambient-glow bg-black">
+                <iframe 
+                    id="mainPlayer" 
+                    class="w-full h-full border-0" 
+                    allowfullscreen 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                </iframe>
             </div>
             
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 glass-panel rounded-2xl">
                 <div>
-                    <h1 id="playerTitle" class="text-xl font-bold text-white tracking-wide">Stream Active</h1>
-                    <p id="playerAuthor" class="text-sm text-cyan-400 font-medium mt-1">Direct Encrypted Stream</p>
+                    <h1 id="playerTitle" class="text-xl font-bold text-white tracking-wide">Video Playing</h1>
+                    <p id="playerAuthor" class="text-sm text-cyan-400 font-medium mt-1">Direct Engine Stream</p>
                 </div>
                 <div class="flex items-center gap-2">
-                    <button onclick="switchStreamNode()" class="px-3 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 rounded-xl text-xs font-semibold transition-all">
-                        🔄 Switch Node
+                    <button onclick="toggleFallbackPlayer()" class="px-3 py-2 bg-cyan-500/10 hover:bg-cyan-500/20 border border-cyan-500/30 text-cyan-300 rounded-xl text-xs font-semibold transition-all">
+                        🔄 Switch Embed Engine
                     </button>
                     <button onclick="closePlayer()" class="px-4 py-2 bg-slate-800/80 hover:bg-red-500/20 hover:text-red-400 border border-slate-700 hover:border-red-500/40 text-slate-300 rounded-xl text-xs font-semibold transition-all flex items-center gap-2">
                         <i data-lucide="x" class="w-4 h-4"></i>
@@ -142,36 +134,36 @@
         <!-- FEED HEADER -->
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
             <div class="flex items-center gap-2">
-                <i data-lucide="radio" class="w-5 h-5 text-cyan-400"></i>
-                <h2 id="feedTitle" class="cyber-font text-lg font-bold text-slate-200 tracking-wide uppercase">Stealth Feed</h2>
+                <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i>
+                <h2 id="feedTitle" class="cyber-font text-lg font-bold text-slate-200 tracking-wide uppercase">Featured Feed</h2>
             </div>
-            <span id="videoCount" class="text-xs text-slate-500 font-mono">Status: Connected</span>
+            <span id="videoCount" class="text-xs text-slate-500 font-mono">Status: Ready</span>
         </div>
 
         <!-- LOADING SPINNER -->
         <div id="loadingSpinner" class="hidden flex flex-col items-center justify-center py-20 space-y-4">
             <div class="w-12 h-12 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
-            <p class="text-sm text-cyan-400/80 font-mono tracking-widest animate-pulse">SEARCHING_PROXY_NODES...</p>
+            <p class="text-sm text-cyan-400/80 font-mono tracking-widest animate-pulse">FETCHING_VIDEO_STREAM...</p>
         </div>
 
         <!-- VIDEO GRID -->
         <section id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Populated dynamically -->
+            <!-- Dynamic Content -->
         </section>
 
     </main>
 
-    <!-- MANUAL ID MODAL -->
+    <!-- MANUAL LINK / ID MODAL -->
     <div id="directModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel max-w-md w-full p-6 rounded-2xl border border-pink-500/30 space-y-4">
             <div class="flex justify-between items-center">
-                <h3 class="cyber-font font-bold text-white">DIRECT STREAM LOAD</h3>
+                <h3 class="cyber-font font-bold text-white">PLAY VIA LINK OR ID</h3>
                 <button onclick="closeDirectModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <p class="text-xs text-slate-400">Paste any Video Link or Video ID to stream directly.</p>
-            <input type="text" id="directUrlInput" placeholder="Paste YouTube Link or Video ID" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-pink-500">
+            <p class="text-xs text-slate-400">Paste any YouTube Link (e.g., <code>https://youtu.be/...</code>) or Video ID directly.</p>
+            <input type="text" id="directUrlInput" placeholder="Paste YouTube Link or ID" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-pink-500">
             <button onclick="playDirectUrl()" class="w-full py-3 bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 text-pink-300 font-bold rounded-xl text-sm transition-all">
-                STREAM NOW
+                PLAY NOW
             </button>
         </div>
     </div>
@@ -180,23 +172,13 @@
     <script>
         lucide.createIcons();
 
-        // Active Piped & Invidious API Mirror Instances
-        const API_NODES = [
-            "https://pipedapi.kavin.rocks",
-            "https://api.piped.privacydev.net",
-            "https://pipedapi.lunar.icu",
-            "https://inv.tux.pizza/api/v1"
-        ];
-
-        let currentApiIndex = 0;
-        let activeVideoId = "";
-        let hlsInstance = null;
+        let currentActiveId = "";
+        let useFallback = false;
 
         const videoGrid = document.getElementById('videoGrid');
         const loadingSpinner = document.getElementById('loadingSpinner');
         const playerContainer = document.getElementById('playerContainer');
-        const videoElement = document.getElementById('nativeVideoPlayer');
-        const playerLoader = document.getElementById('playerLoader');
+        const mainPlayer = document.getElementById('mainPlayer');
         const playerTitle = document.getElementById('playerTitle');
         const playerAuthor = document.getElementById('playerAuthor');
         const feedTitle = document.getElementById('feedTitle');
@@ -204,25 +186,29 @@
 
         const presets = {
             trending: [
-                { id: 'jfKfPfyJRdk', title: 'Lofi Hip Hop Radio - Beats to Chill', author: 'Lofi Girl' },
-                { id: '5qap5aO4i9A', title: 'Lofi Beats to Sleep / Relax', author: 'Chill Beats' },
-                { id: 'DWcJFNfaw9c', title: 'Cyberpunk Synthwave Session', author: 'Cyber Sound' },
-                { id: 'TURbeWhz0u4', title: 'Ambient Cyberpunk Coding Radio', author: 'Hacker FM' }
+                { id: 'jfKfPfyJRdk', title: 'Lofi Hip Hop Radio - Beats to Chill/Relax', author: 'Lofi Girl' },
+                { id: '5qap5aO4i9A', title: 'lofi hip hop radio - beats to sleep/chill to', author: 'Lofi Girl' },
+                { id: 'DWcJFNfaw9c', title: 'Cyberpunk Synthwave Coding Session', author: 'Cyber Sound' },
+                { id: 'TURbeWhz0u4', title: 'Ambient Cyberpunk Coding Radio', author: 'Hacker FM' },
+                { id: '9bZkp7q19f0', title: 'PSY - GANGNAM STYLE M/V', author: 'officialpsy' },
+                { id: 'kJQP7kiw5Fk', title: 'Luis Fonsi - Despacito ft. Daddy Yankee', author: 'Luis Fonsi' }
             ],
             music: [
-                { id: 'YQHsXMglC9A', title: 'Adele - Hello Stream', author: 'Adele' },
-                { id: 'OPf0YbXqDm0', title: 'Uptown Funk Highlight', author: 'Mark Ronson' }
+                { id: 'YQHsXMglC9A', title: 'Adele - Hello (Official Music Video)', author: 'Adele' },
+                { id: 'OPf0YbXqDm0', title: 'Mark Ronson - Uptown Funk ft. Bruno Mars', author: 'Mark Ronson' },
+                { id: 'JGwWNGJdvx8', title: 'Ed Sheeran - Shape of You', author: 'Ed Sheeran' }
             ],
             gaming: [
-                { id: '36YnV9STBqc', title: 'GTA VI Official Trailer 1', author: 'Rockstar Games' },
-                { id: 'V1UyqIRwrq4', title: 'Cyberpunk 2077 Cinematic', author: 'CD PROJEKT RED' }
+                { id: '36YnV9STBqc', title: 'GTA VI Trailer 1', author: 'Rockstar Games' },
+                { id: 'V1UyqIRwrq4', title: 'Cyberpunk 2077 Official Cinematic Trailer', author: 'Cyberpunk 2077' },
+                { id: 'QkkoVnHVz6k', title: 'Minecraft Official Live Action Trailer', author: 'Minecraft' }
             ],
             livelyrics: [
-                { id: 'DWcJFNfaw9c', title: 'Chill Coding Station', author: 'Night Beats' }
+                { id: 'DWcJFNfaw9c', title: 'Chill Synthwave Radio', author: 'Night Beats' }
             ],
             tech: [
-                { id: 'zOjov-2OZ0E', title: 'Full Web Development Masterclass', author: 'SuperSimpleDev' },
-                { id: 'rfscVS0vtbw', title: 'JavaScript Crash Course', author: 'Mosh' }
+                { id: 'zOjov-2OZ0E', title: 'HTML & CSS Full Course - Beginner to Pro', author: 'SuperSimpleDev' },
+                { id: 'rfscVS0vtbw', title: 'JavaScript Tutorial for Beginners', author: 'Programming with Mosh' }
             ]
         };
 
@@ -231,7 +217,7 @@
         });
 
         function loadCategory(key) {
-            feedTitle.innerText = `${key.toUpperCase()} FEED`;
+            feedTitle.innerText = `${key.toUpperCase()} STREAM FEED`;
             const items = presets[key] || presets.trending;
             renderPresetVideos(items);
         }
@@ -243,15 +229,16 @@
             items.forEach(item => {
                 const card = document.createElement('div');
                 card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
-                card.onclick = () => playStream(item.id, item.title, item.author);
+                card.onclick = () => playVideo(item.id, item.title, item.author);
 
-                const proxyThumb = `https://images.weserv.nl/?url=i.ytimg.com/vi/${item.id}/hqdefault.jpg`;
+                // Use reliable image CDN
+                const thumbnail = `https://i.ytimg.com/vi/${item.id}/hqdefault.jpg`;
 
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
-                        <img src="${proxyThumb}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <img src="${thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg">
+                            <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
                                 <i data-lucide="play" class="w-6 h-6 fill-current"></i>
                             </div>
                         </div>
@@ -268,42 +255,45 @@
             lucide.createIcons();
         }
 
-        async function handleSearch(e) {
+        function handleSearch(e) {
             e.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
+            const input = document.getElementById('searchInput').value.trim();
+            if (!input) return;
 
-            feedTitle.innerText = `Results for: "${query}"`;
+            // Check if user pasted a direct YouTube URL inside search bar
+            let extractedId = parseYouTubeId(input);
+            if (extractedId) {
+                playVideo(extractedId, "Custom Stream", "Direct Link");
+                return;
+            }
+
+            // Fallback Search using public API endpoint
+            feedTitle.innerText = `Search: "${input}"`;
+            fetchSearch(input);
+        }
+
+        async function fetchSearch(query) {
             showLoading(true);
             videoGrid.innerHTML = '';
 
-            let success = false;
-
-            // Try rotating through API Nodes if one fails
-            for (let i = 0; i < API_NODES.length; i++) {
-                try {
-                    const node = API_NODES[i];
-                    const res = await fetch(`${node}/search?q=${encodeURIComponent(query)}&filter=videos`);
-                    const data = await res.json();
-                    
-                    if (data && data.items && data.items.length > 0) {
-                        renderSearchResults(data.items);
-                        success = true;
-                        break;
-                    }
-                } catch (err) {
-                    console.warn(`Node ${API_NODES[i]} search failed, switching...`);
+            try {
+                const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query)}&filter=videos`);
+                const data = await res.json();
+                
+                if (data && data.items && data.items.length > 0) {
+                    renderSearchResults(data.items);
+                } else {
+                    showError("No video results found. Try pasting direct YouTube link.");
                 }
+            } catch (err) {
+                showError("Search API busy. Please paste direct YouTube video link in search bar.");
+            } finally {
+                showLoading(false);
             }
-
-            if (!success) {
-                showError("Search Relay Busy. Try searching again or paste direct link.");
-            }
-            showLoading(false);
         }
 
         function renderSearchResults(items) {
-            videoCount.innerText = `${items.length} Streams Found`;
+            videoCount.innerText = `${items.length} Results`;
             videoGrid.innerHTML = '';
 
             items.forEach(item => {
@@ -312,13 +302,11 @@
                 
                 const card = document.createElement('div');
                 card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
-                card.onclick = () => playStream(videoId, item.title, item.uploaderName || 'Video Stream');
-
-                const proxyThumb = `https://images.weserv.nl/?url=${encodeURIComponent(item.thumbnail)}`;
+                card.onclick = () => playVideo(videoId, item.title, item.uploaderName || 'YouTube Stream');
 
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
-                        <img src="${proxyThumb}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg">
                                 <i data-lucide="play" class="w-6 h-6 fill-current"></i>
@@ -329,7 +317,7 @@
                         <h3 class="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-cyan-300 transition-colors">
                             ${item.title}
                         </h3>
-                        <p class="text-xs text-slate-400">${item.uploaderName || 'Media Stream'}</p>
+                        <p class="text-xs text-slate-400">${item.uploaderName || 'YouTube Creator'}</p>
                     </div>
                 `;
                 videoGrid.appendChild(card);
@@ -337,85 +325,31 @@
             lucide.createIcons();
         }
 
-        // Direct Stream Engine (Fetches raw video stream data bypassing youtube iframe block)
-        async function playStream(id, title, author) {
-            activeVideoId = id;
+        // Direct YouTube Player Engine
+        function playVideo(id, title, author) {
+            currentActiveId = id;
             playerTitle.innerText = title;
             playerAuthor.innerText = author;
 
-            playerContainer.classList.remove('hidden');
-            playerLoader.classList.remove('hidden');
-            window.scrollTo({ top: 0, behavior: 'smooth' });
-
-            await loadVideoStreamData(id);
-        }
-
-        async function loadVideoStreamData(id) {
-            let streamUrl = null;
-            let isHls = false;
-
-            // Fetch video stream info from API node
-            for (let i = 0; i < API_NODES.length; i++) {
-                const nodeUrl = API_NODES[(currentApiIndex + i) % API_NODES.length];
-                try {
-                    const res = await fetch(`${nodeUrl}/streams/${id}`);
-                    const data = await res.json();
-
-                    if (data.hls) {
-                        streamUrl = data.hls;
-                        isHls = true;
-                        break;
-                    } else if (data.videoStreams && data.videoStreams.length > 0) {
-                        // Pick best non-audio-only video stream
-                        const bestStream = data.videoStreams.find(s => s.quality === '720p' || s.quality === '1080p') || data.videoStreams[0];
-                        streamUrl = bestStream.url;
-                        break;
-                    }
-                } catch (e) {
-                    console.warn(`Stream fetch failed on node ${nodeUrl}`);
-                }
-            }
-
-            if (streamUrl) {
-                if (hlsInstance) {
-                    hlsInstance.destroy();
-                }
-
-                if (isHls && Hls.isSupported()) {
-                    hlsInstance = new Hls();
-                    hlsInstance.loadSource(streamUrl);
-                    hlsInstance.attachMedia(videoElement);
-                    hlsInstance.on(Hls.Events.MANIFEST_PARSED, () => {
-                        playerLoader.classList.add('hidden');
-                        videoElement.play();
-                    });
-                } else {
-                    videoElement.src = streamUrl;
-                    videoElement.onloadedmetadata = () => {
-                        playerLoader.classList.add('hidden');
-                        videoElement.play();
-                    };
-                }
+            // Dual engine player selection
+            if(!useFallback) {
+                mainPlayer.src = `https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0&enablejsapi=1`;
             } else {
-                playerLoader.innerHTML = `<p class="text-red-400 text-xs font-mono">Stream error. Click "Switch Node" above.</p>`;
+                mainPlayer.src = `https://inv.tux.pizza/embed/${id}?autoplay=1`;
             }
+
+            playerContainer.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
         }
 
-        function switchStreamNode() {
-            if(!activeVideoId) return;
-            currentApiIndex = (currentApiIndex + 1) % API_NODES.length;
-            playerLoader.classList.remove('hidden');
-            playerLoader.innerHTML = `
-                <div class="w-10 h-10 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
-                <p class="text-xs text-cyan-300 font-mono animate-pulse">SWITCHING_NODE...</p>
-            `;
-            loadVideoStreamData(activeVideoId);
+        function toggleFallbackPlayer() {
+            if(!currentActiveId) return;
+            useFallback = !useFallback;
+            playVideo(currentActiveId, playerTitle.innerText, playerAuthor.innerText);
         }
 
         function closePlayer() {
-            if(hlsInstance) hlsInstance.destroy();
-            videoElement.pause();
-            videoElement.src = '';
+            mainPlayer.src = '';
             playerContainer.classList.add('hidden');
         }
 
@@ -428,6 +362,13 @@
             videoGrid.innerHTML = `<div class="col-span-full glass-panel p-8 text-center text-cyan-300 font-mono text-sm">${msg}</div>`;
         }
 
+        function parseYouTubeId(url) {
+            if (/^[a-zA-Z0-9_-]{11}$/.test(url)) return url;
+            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
+            const match = url.match(regExp);
+            return (match && match[2].length === 11) ? match[2] : null;
+        }
+
         function openDirectModal() { document.getElementById('directModal').classList.remove('hidden'); }
         function closeDirectModal() { document.getElementById('directModal').classList.add('hidden'); }
         
@@ -435,15 +376,13 @@
             const input = document.getElementById('directUrlInput').value.trim();
             if(!input) return;
 
-            let videoId = input;
-            if(input.includes('v=')) {
-                videoId = input.split('v=')[1].split('&')[0];
-            } else if(input.includes('youtu.be/')) {
-                videoId = input.split('youtu.be/')[1].split('?')[0];
+            const videoId = parseYouTubeId(input);
+            if(videoId) {
+                playVideo(videoId, "Custom Stream", "User Added Stream");
+                closeDirectModal();
+            } else {
+                alert("Invalid YouTube Link or Video ID!");
             }
-
-            playStream(videoId, "Custom Decrypted Stream", "Direct Node Stream");
-            closeDirectModal();
         }
     </script>
 </body>
