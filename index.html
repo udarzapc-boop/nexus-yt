@@ -1,529 +1,356 @@
 <!DOCTYPE html>
-<html lang="en" class="dark">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>NEXUS // Cyber-Stream Hub</title>
-    <!-- Tailwind CSS CDN -->
+    <title>CYBER_TUBE // Next-Gen Stream Interface</title>
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        cyber: {
-                            950: '#030712',
-                            900: '#0b0f19',
-                            800: '#111827',
-                            700: '#1f2937',
-                            cyan: '#06b6d4',
-                            magenta: '#ec4899',
-                            neon: '#10b981'
-                        }
-                    },
-                    fontFamily: {
-                        sans: ['Inter', 'sans-serif'],
-                        mono: ['Courier New', 'monospace']
-                    }
-                }
-            }
-        }
-    </script>
-    <!-- FontAwesome for Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
     <style>
-        .font-orbitron { font-family: 'Orbitron', sans-serif; }
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar { width: 8px; height: 8px; }
-        ::-webkit-scrollbar-track { background: #0b0f19; }
-        ::-webkit-scrollbar-thumb { background: #1f2937; border-radius: 4px; border: 1px solid rgba(6, 182, 212, 0.2); }
-        ::-webkit-scrollbar-thumb:hover { background: #06b6d4; }
-        
-        /* Glassmorphism utilities */
+        @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;800&family=Rajdhani:wght@500;600;700&display=swap');
+
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: #060913;
+            color: #e2e8f0;
+            background-image: 
+                radial-gradient(circle at 15% 15%, rgba(0, 243, 255, 0.05) 0%, transparent 40%),
+                radial-gradient(circle at 85% 85%, rgba(255, 0, 127, 0.05) 0%, transparent 40%);
+        }
+
+        .cyber-font {
+            font-family: 'Orbitron', sans-serif;
+        }
+
         .glass-panel {
-            background: rgba(17, 24, 39, 0.65);
+            background: rgba(13, 18, 36, 0.65);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(0, 243, 255, 0.15);
             box-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
         }
+
         .glass-card {
-            background: rgba(31, 41, 55, 0.4);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.06);
+            background: rgba(22, 30, 56, 0.5);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
+
         .glass-card:hover {
-            border-color: rgba(6, 182, 212, 0.5);
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.2);
+            border-color: rgba(0, 243, 255, 0.5);
             transform: translateY(-4px);
+            box-shadow: 0 10px 25px -5px rgba(0, 243, 255, 0.2);
         }
+
         .ambient-glow {
-            position: absolute;
-            width: 300px;
-            height: 300px;
-            border-radius: 50%;
-            filter: blur(100px);
-            z-index: -1;
-            pointer-events: none;
-            opacity: 0.15;
+            box-shadow: 0 0 50px rgba(0, 243, 255, 0.25);
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 6px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #060913;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1e293b;
+            border-radius: 3px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00f3ff;
         }
     </style>
 </head>
-<body class="bg-cyber-950 text-slate-100 min-h-screen relative selection:bg-cyan-500 selection:text-black overflow-x-hidden">
+<body class="min-h-screen flex flex-col">
 
-    <!-- Ambient Cyber Background Glows -->
-    <div class="ambient-glow bg-cyan-500 top-10 left-10"></div>
-    <div class="ambient-glow bg-pink-500 top-1/2 right-10"></div>
-    <div class="ambient-glow bg-emerald-500 bottom-10 left-1/3"></div>
-
-    <!-- Main Container -->
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col min-h-screen">
-
-        <!-- Top Navigation Header -->
-        <header class="glass-panel rounded-2xl px-6 py-4 mb-8 flex flex-col md:flex-row items-center justify-between gap-4 sticky top-4 z-40">
-            <div class="flex items-center space-x-3">
-                <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-cyan-500 to-pink-500 flex items-center justify-center shadow-lg shadow-cyan-500/30">
-                    <i class="fa-solid fa-terminal text-black text-lg"></i>
+    <!-- TOP NAVIGATION -->
+    <header class="sticky top-0 z-40 glass-panel border-b border-cyan-500/20 px-4 lg:px-8 py-3">
+        <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
+            
+            <!-- Logo -->
+            <div class="flex items-center gap-3 cursor-pointer" onclick="loadTrending()">
+                <div class="p-2 bg-cyan-500/10 border border-cyan-400/30 rounded-xl text-cyan-400">
+                    <i data-lucide="play-square" class="w-6 h-6"></i>
                 </div>
-                <div>
-                    <h1 class="font-orbitron font-black text-xl tracking-wider bg-gradient-to-r from-cyan-400 via-teal-300 to-pink-500 bg-clip-text text-transparent">NEXUS // HUB</h1>
-                    <p class="text-xs text-slate-400 font-mono">SECURE YOUTUBE STREAM GRID</p>
-                </div>
+                <span class="cyber-font font-bold text-xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
+                    CYBER<span class="text-white">_TUBE</span>
+                </span>
             </div>
 
             <!-- Search Bar -->
-            <div class="relative w-full md:w-96">
-                <span class="absolute inset-y-0 left-0 flex items-center pl-3.5 pointer-events-none text-slate-400">
-                    <i class="fa-solid fa-magnifying-glass text-sm"></i>
-                </span>
-                <input type="text" id="searchInput" placeholder="Search streams, tags, channels..." 
-                    class="w-full pl-10 pr-4 py-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl text-sm text-slate-200 placeholder-slate-500 focus:outline-none focus:border-cyan-500 focus:ring-1 focus:ring-cyan-500 transition-all">
-            </div>
-
-            <!-- Action Buttons -->
-            <div class="flex items-center space-x-3 w-full md:w-auto justify-end">
-                <button onclick="openAddModal()" class="flex-1 md:flex-none px-4 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 hover:from-cyan-400 hover:to-teal-400 text-black font-semibold text-sm transition-all shadow-lg shadow-cyan-500/20 flex items-center justify-center space-x-2">
-                    <i class="fa-solid fa-plus"></i>
-                    <span>Add Stream</span>
+            <form onsubmit="handleSearch(event)" class="flex-1 max-w-2xl relative">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search YouTube videos, music, gaming..." 
+                    class="w-full bg-slate-950/80 border border-cyan-500/30 rounded-full py-2.5 pl-11 pr-24 text-sm text-cyan-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
+                >
+                <i data-lucide="search" class="w-5 h-5 absolute left-4 top-3 text-slate-400"></i>
+                <button type="submit" class="absolute right-1.5 top-1.5 px-4 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 rounded-full text-xs font-semibold tracking-wider uppercase transition-all">
+                    Search
                 </button>
-                <button onclick="resetToDefaults()" title="Reset to default curated items" class="p-2.5 rounded-xl glass-card text-slate-300 hover:text-cyan-400 transition-all">
-                    <i class="fa-solid fa-rotate"></i>
-                </button>
-            </div>
-        </header>
-
-        <!-- Category Filter Pills -->
-        <nav class="mb-8 overflow-x-auto pb-2 scrollbar-none flex space-x-2">
-            <button onclick="filterCategory('All')" class="category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all bg-cyan-500 text-black font-semibold shadow-lg shadow-cyan-500/20" data-category="All">ALL STREAMS</button>
-            <button onclick="filterCategory('Cyberpunk')" class="category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all glass-card text-slate-300 hover:text-cyan-400" data-category="Cyberpunk">CYBERPUNK</button>
-            <button onclick="filterCategory('Lo-Fi')" class="category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all glass-card text-slate-300 hover:text-cyan-400" data-category="Lo-Fi">LO-FI & CHILL</button>
-            <button onclick="filterCategory('Tech')" class="category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all glass-card text-slate-300 hover:text-cyan-400" data-category="Tech">TECH & CODE</button>
-            <button onclick="filterCategory('Sci-Fi')" class="category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all glass-card text-slate-300 hover:text-cyan-400" data-category="Sci-Fi">SCI-FI CINEMATIC</button>
-            <button onclick="filterCategory('Custom')" class="category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all glass-card text-slate-300 hover:text-cyan-400" data-category="Custom">USER CURATED</button>
-        </nav>
-
-        <!-- Video Grid Container -->
-        <main class="flex-grow">
-            <div id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-                <!-- Dynamically populated video cards -->
-            </div>
-            
-            <!-- Empty state -->
-            <div id="emptyState" class="hidden flex flex-col items-center justify-center py-20 text-center">
-                <div class="w-16 h-16 rounded-2xl glass-card flex items-center justify-center text-cyan-400 mb-4 text-2xl">
-                    <i class="fa-solid fa-satellite-dish"></i>
-                </div>
-                <h3 class="text-lg font-semibold text-slate-200">No Streams Found</h3>
-                <p class="text-sm text-slate-400 mt-1">Try adjusting your search criteria or add a custom YouTube stream.</p>
-            </div>
-        </main>
-
-        <!-- Footer -->
-        <footer class="mt-16 pt-6 border-t border-slate-800/80 text-center text-xs text-slate-500 font-mono flex flex-col sm:flex-row items-center justify-between gap-4">
-            <p>NEXUS MEDIA TERMINAL // HOSTED ON GITHUB PAGES</p>
-            <p class="text-cyan-500/80">CUSTOM YOUTUBE IMMERSIVE INTERFACE</p>
-        </footer>
-    </div>
-
-    <!-- Theater Mode / Player Modal -->
-    <div id="playerModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl hidden flex items-center justify-center p-4 sm:p-6 md:p-10 transition-opacity">
-        <div class="glass-panel w-full max-w-5xl rounded-3xl overflow-hidden border border-cyan-500/30 shadow-[0_0_50px_rgba(6,182,212,0.2)] flex flex-col max-h-[90vh]">
-            <!-- Modal Header -->
-            <div class="px-6 py-4 flex items-center justify-between border-b border-white/10 bg-slate-900/60">
-                <div class="flex items-center space-x-3">
-                    <span class="w-3 h-3 rounded-full bg-red-500 animate-pulse"></span>
-                    <h3 id="modalTitle" class="font-orbitron font-bold text-base text-slate-100 truncate max-w-md">Stream Title</h3>
-                </div>
-                <button onclick="closePlayerModal()" class="w-9 h-9 rounded-xl glass-card flex items-center justify-center text-slate-400 hover:text-white transition-all">
-                    <i class="fa-solid fa-xmark text-lg"></i>
-                </button>
-            </div>
-            
-            <!-- Video Container with Ambient Glow -->
-            <div class="relative bg-black aspect-video w-full flex items-center justify-center overflow-hidden">
-                <div class="absolute inset-0 bg-cyan-500/10 filter blur-3xl pointer-events-none"></div>
-                <iframe id="youtubeIframe" class="w-full h-full z-10" src="" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
-            </div>
-
-            <!-- Modal Footer info -->
-            <div class="px-6 py-4 bg-slate-900/60 flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-t border-white/10">
-                <div>
-                    <p id="modalChannel" class="text-sm font-semibold text-cyan-400">Channel Name</p>
-                    <p id="modalCategory" class="text-xs text-slate-400 font-mono mt-0.5">Category</p>
-                </div>
-                <button id="deleteCustomBtn" onclick="deleteCurrentCustomVideo()" class="hidden px-3 py-1.5 rounded-lg bg-red-500/20 text-red-400 hover:bg-red-500/30 text-xs font-medium transition-all flex items-center space-x-1.5 self-start sm:self-auto">
-                    <i class="fa-solid fa-trash"></i>
-                    <span>Remove Custom Stream</span>
-                </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Add Video Modal -->
-    <div id="addModal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xl hidden flex items-center justify-center p-4">
-        <div class="glass-panel w-full max-w-lg rounded-3xl p-6 border border-cyan-500/30 shadow-2xl">
-            <div class="flex items-center justify-between mb-6">
-                <h3 class="font-orbitron font-bold text-lg text-cyan-400 flex items-center space-x-2">
-                    <i class="fa-solid fa-circle-plus"></i>
-                    <span>Add Custom Stream</span>
-                </h3>
-                <button onclick="closeAddModal()" class="w-8 h-8 rounded-xl glass-card flex items-center justify-center text-slate-400 hover:text-white transition-all">
-                    <i class="fa-solid fa-xmark"></i>
-                </button>
-            </div>
-
-            <form id="addVideoForm" onsubmit="handleVideoSubmit(event)" class="space-y-4">
-                <div>
-                    <label class="block text-xs font-mono text-slate-400 mb-1">YOUTUBE URL OR VIDEO ID</label>
-                    <input type="text" id="inputUrl" required placeholder="e.g., https://www.youtube.com/watch?v=dQw4w9WgXcQ"
-                        class="w-full px-4 py-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500 transition-all">
-                </div>
-                <div>
-                    <label class="block text-xs font-mono text-slate-400 mb-1">STREAM TITLE</label>
-                    <input type="text" id="inputTitle" required placeholder="e.g., Cyberpunk Synthwave Mix 2077"
-                        class="w-full px-4 py-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500 transition-all">
-                </div>
-                <div>
-                    <label class="block text-xs font-mono text-slate-400 mb-1">CHANNEL NAME</label>
-                    <input type="text" id="inputChannel" required placeholder="e.g., Neon Pulse Radio"
-                        class="w-full px-4 py-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl text-sm text-slate-200 placeholder-slate-600 focus:outline-none focus:border-cyan-500 transition-all">
-                </div>
-                <div>
-                    <label class="block text-xs font-mono text-slate-400 mb-1">CATEGORY</label>
-                    <select id="inputCategory" class="w-full px-4 py-2.5 bg-slate-900/80 border border-slate-700/60 rounded-xl text-sm text-slate-200 focus:outline-none focus:border-cyan-500 transition-all">
-                        <option value="Cyberpunk">Cyberpunk</option>
-                        <option value="Lo-Fi">Lo-Fi & Chill</option>
-                        <option value="Tech">Tech & Code</option>
-                        <option value="Sci-Fi">Sci-Fi Cinematic</option>
-                        <option value="Custom">Custom</option>
-                    </select>
-                </div>
-                <div class="pt-4 flex space-x-3">
-                    <button type="button" onclick="closeAddModal()" class="flex-1 py-2.5 rounded-xl glass-card text-slate-300 font-medium text-sm hover:bg-slate-800 transition-all">Cancel</button>
-                    <button type="submit" class="flex-1 py-2.5 rounded-xl bg-gradient-to-r from-cyan-500 to-teal-500 text-black font-semibold text-sm hover:from-cyan-400 hover:to-teal-400 transition-all shadow-lg shadow-cyan-500/20">Save Stream</button>
-                </div>
             </form>
+
+            <!-- Quick Stats/Actions -->
+            <div class="hidden md:flex items-center gap-3">
+                <button onclick="openDirectPlayModal()" class="flex items-center gap-2 px-3 py-2 bg-pink-500/10 border border-pink-500/30 text-pink-400 rounded-xl text-xs font-semibold hover:bg-pink-500/20 transition-all">
+                    <i data-lucide="link" class="w-4 h-4"></i>
+                    Direct Link
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- MAIN CONTAINER -->
+    <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 space-y-6">
+
+        <!-- THEATER / PLAYER SECTION (Hidden until video click) -->
+        <section id="playerContainer" class="hidden space-y-4">
+            <div class="relative w-full aspect-video rounded-2xl overflow-hidden glass-panel border border-cyan-500/40 ambient-glow">
+                <iframe 
+                    id="mainPlayer" 
+                    class="w-full h-full border-0" 
+                    allowfullscreen 
+                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
+                </iframe>
+            </div>
+            
+            <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 glass-panel rounded-2xl">
+                <div>
+                    <h1 id="playerTitle" class="text-xl font-bold text-white tracking-wide">Video Title</h1>
+                    <p id="playerAuthor" class="text-sm text-cyan-400 font-medium mt-1">Channel Name</p>
+                </div>
+                <button onclick="closePlayer()" class="self-start md:self-auto px-4 py-2 bg-slate-800/80 hover:bg-red-500/20 hover:text-red-400 border border-slate-700 hover:border-red-500/40 text-slate-300 rounded-xl text-xs font-semibold transition-all flex items-center gap-2">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                    Close Player
+                </button>
+            </div>
+        </section>
+
+        <!-- FEED HEADER -->
+        <div class="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div class="flex items-center gap-2">
+                <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i>
+                <h2 id="feedTitle" class="cyber-font text-lg font-bold text-slate-200 tracking-wide uppercase">Featured Feed</h2>
+            </div>
+            <span id="videoCount" class="text-xs text-slate-500 font-mono">0 Videos</span>
+        </div>
+
+        <!-- LOADING INDICATOR -->
+        <div id="loadingSpinner" class="hidden flex flex-col items-center justify-center py-20 space-y-4">
+            <div class="w-12 h-12 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
+            <p class="text-sm text-cyan-400/80 font-mono tracking-widest animate-pulse">FETCHING_YT_DATA...</p>
+        </div>
+
+        <!-- VIDEO GRID -->
+        <section id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+            <!-- Dynamic Video Cards will render here -->
+        </section>
+
+    </main>
+
+    <!-- DIRECT LINK MODAL -->
+    <div id="directModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
+        <div class="glass-panel max-w-md w-full p-6 rounded-2xl border border-pink-500/30 space-y-4">
+            <div class="flex justify-between items-center">
+                <h3 class="cyber-font font-bold text-white">PLAY VIA LINK OR ID</h3>
+                <button onclick="closeDirectPlayModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+            </div>
+            <input type="text" id="directUrlInput" placeholder="Paste YouTube Link or Video ID" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-pink-500">
+            <button onclick="playDirectUrl()" class="w-full py-3 bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 text-pink-300 font-bold rounded-xl text-sm transition-all">
+                PLAY NOW
+            </button>
         </div>
     </div>
 
-    <!-- Notification Toast -->
-    <div id="toast" class="fixed bottom-6 right-6 z-50 transform translate-y-20 opacity-0 transition-all duration-300 pointer-events-none">
-        <div class="glass-panel px-4 py-3 rounded-xl border border-cyan-500/50 flex items-center space-x-3 shadow-2xl">
-            <i id="toastIcon" class="fa-solid fa-circle-check text-cyan-400"></i>
-            <span id="toastMessage" class="text-sm font-medium text-slate-200">Action successful!</span>
-        </div>
-    </div>
-
-    <!-- Application Script -->
+    <!-- SCRIPT -->
     <script>
-        // Default Curated Videos (Futuristic, Lo-Fi, Tech, Sci-Fi)
-        const defaultVideos = [
-            {
-                id: "jfKfPfyJRdk",
-                title: "Lofi hip hop radio - beats to relax/study to",
-                channel: "Lofi Girl",
-                category: "Lo-Fi",
-                isCustom: false
-            },
-            {
-                id: "5qap5aO4i9A",
-                title: "Lofi hip hop radio - beats to sleep/chill to",
-                channel: "Lofi Girl",
-                category: "Lo-Fi",
-                isCustom: false
-            },
-            {
-                id: "V_GiqVwZnts",
-                title: "Cyberpunk 2077 Radio - Future Synthwave & Cyberpunk Music",
-                channel: "Cyberpunk Vibe",
-                category: "Cyberpunk",
-                isCustom: false
-            },
-            {
-                id: "UfcAVejslrU",
-                title: "FUTURE BASS - Cyberpunk Mix [Synthwave / Electro]",
-                channel: "Astral Cyber",
-                category: "Cyberpunk",
-                isCustom: false
-            },
-            {
-                id: "7sDYel_uCdQ",
-                title: "Building an Artificial Intelligence from Scratch in JavaScript",
-                channel: "Code Nexus",
-                category: "Tech",
-                isCustom: false
-            },
-            {
-                id: "8aGhZQkoFbQ",
-                title: "Sci-Fi Ambient Space Music - Deep Space Soundscapes",
-                channel: "Cosmic Odyssey",
-                category: "Sci-Fi",
-                isCustom: false
-            },
-            {
-                id: "kqtD5dpn9EE",
-                title: "Neural Network Architecture Explained Visually",
-                channel: "Tech Matrix",
-                category: "Tech",
-                isCustom: false
-            },
-            {
-                id: "2Vv-BfVoq4g",
-                title: "Interstellar Main Theme - Cinematic Soundtrack",
-                channel: "Hans Zimmer Archive",
-                category: "Sci-Fi",
-                isCustom: false
-            }
-        ];
+        // Initialize Lucide Icons
+        lucide.createIcons();
 
-        let currentCategory = 'All';
-        let searchQuery = '';
-        let activeVideoId = null;
+        const videoGrid = document.getElementById('videoGrid');
+        const loadingSpinner = document.getElementById('loadingSpinner');
+        const playerContainer = document.getElementById('playerContainer');
+        const mainPlayer = document.getElementById('mainPlayer');
+        const playerTitle = document.getElementById('playerTitle');
+        const playerAuthor = document.getElementById('playerAuthor');
+        const feedTitle = document.getElementById('feedTitle');
+        const videoCount = document.getElementById('videoCount');
 
-        // Initialize App
+        // Initial Load
         document.addEventListener('DOMContentLoaded', () => {
-            renderVideos();
-
-            // Search input listener
-            document.getElementById('searchInput').addEventListener('input', (e) => {
-                searchQuery = e.target.value.toLowerCase().trim();
-                renderVideos();
-            });
+            loadTrending();
         });
 
-        // Get all videos (default + custom stored in localStorage)
-        function getAllVideos() {
-            const custom = JSON.parse(localStorage.getItem('nexus_custom_videos') || '[]');
-            return [...custom, ...defaultVideos];
+        // Search Handler
+        async function handleSearch(e) {
+            e.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            feedTitle.innerText = `Search: "${query}"`;
+            fetchYouTubeVideos(query);
         }
 
-        // Render Video Grid
-        function renderVideos() {
-            const grid = document.getElementById('videoGrid');
-            const emptyState = document.getElementById('emptyState');
-            const allVideos = getAllVideos();
+        // Default Trending/Popular Fetcher (Using Invidious Public API Endpoint)
+        async function loadTrending() {
+            feedTitle.innerText = "Trending Feeds";
+            fetchYouTubeVideos("Trending Music Gaming 2026");
+        }
 
-            // Filter logic
-            const filtered = allVideos.filter(video => {
-                const matchesCategory = currentCategory === 'All' || video.category === currentCategory;
-                const matchesSearch = video.title.toLowerCase().includes(searchQuery) || 
-                                      video.channel.toLowerCase().includes(searchQuery) ||
-                                      video.category.toLowerCase().includes(searchQuery);
-                return matchesCategory && matchesSearch;
-            });
+        // Core YouTube Fetch Engine
+        async function fetchYouTubeVideos(query) {
+            showLoading(true);
+            videoGrid.innerHTML = '';
 
-            grid.innerHTML = '';
-
-            if (filtered.length === 0) {
-                emptyState.classList.remove('hidden');
-                return;
-            } else {
-                emptyState.classList.add('hidden');
+            try {
+                // Public Piped / Invidious API Fallback network
+                const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query)}&filter=videos`);
+                const data = await res.json();
+                
+                if (data.items && data.items.length > 0) {
+                    renderVideos(data.items);
+                } else {
+                    fallbackSearch(query);
+                }
+            } catch (err) {
+                // Secondary Fallback Network
+                try {
+                    const res = await fetch(`https://invidious.io.lol/api/v1/search?q=${encodeURIComponent(query)}`);
+                    const data = await res.json();
+                    renderInvidiousVideos(data);
+                } catch (e) {
+                    showError("Unable to load search results. Please try again.");
+                }
+            } finally {
+                showLoading(false);
             }
+        }
 
-            filtered.forEach(video => {
+        function renderVideos(items) {
+            videoCount.innerText = `${items.length} Results`;
+            items.forEach(item => {
+                if(!item.url) return;
+                const videoId = item.url.replace('/watch?v=', '');
+                
                 const card = document.createElement('div');
-                card.className = "glass-card rounded-2xl overflow-hidden flex flex-col group cursor-pointer";
-                card.onclick = () => openPlayerModal(video);
-
-                // Thumbnail URL using maxresdefault with fallback
-                const thumbUrl = `https://img.youtube.com/vi/${video.id}/hqdefault.jpg`;
+                card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
+                card.onclick = () => playVideo(videoId, item.title, item.uploaderName || 'YouTube Creator');
 
                 card.innerHTML = `
-                    <div class="relative aspect-video w-full bg-slate-900 overflow-hidden">
-                        <img src="${thumbUrl}" alt="${video.title}" 
-                            onerror="this.src='https://placehold.co/600x400/0b0f19/06b6d4?text=STREAM+PREVIEW'"
-                            class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent opacity-80"></div>
-                        
-                        <!-- Category Badge -->
-                        <span class="absolute top-3 left-3 px-2.5 py-1 rounded-lg bg-black/60 backdrop-blur-md border border-white/10 text-[10px] font-mono text-cyan-400">
-                            ${video.category}
-                        </span>
-
-                        <!-- Play Icon Overlay -->
-                        <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity bg-black/40 backdrop-blur-[2px]">
-                            <div class="w-12 h-12 rounded-full bg-cyan-500 text-black flex items-center justify-center shadow-lg shadow-cyan-500/50 transform group-hover:scale-110 transition-transform">
-                                <i class="fa-solid fa-play ml-0.5"></i>
+                    <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
+                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
+                                <i data-lucide="play" class="w-6 h-6 fill-current"></i>
                             </div>
                         </div>
-
-                        ${video.isCustom ? '<span class="absolute top-3 right-3 px-2 py-0.5 rounded bg-pink-500/20 border border-pink-500/40 text-[9px] font-mono text-pink-300">CUSTOM</span>' : ''}
+                        <span class="absolute bottom-2 right-2 bg-slate-950/80 backdrop-blur-md border border-white/10 text-cyan-300 text-[10px] font-mono px-2 py-0.5 rounded-md">
+                            ${formatDuration(item.duration)}
+                        </span>
                     </div>
-
-                    <div class="p-4 flex flex-col flex-grow justify-between">
-                        <h4 class="font-semibold text-sm text-slate-100 line-clamp-2 group-hover:text-cyan-400 transition-colors">${video.title}</h4>
-                        <div class="flex items-center justify-between mt-3 pt-3 border-t border-white/5">
-                            <span class="text-xs text-slate-400 truncate max-w-[180px]"><i class="fa-regular fa-user-circle mr-1 text-cyan-500"></i>${video.channel}</span>
-                            <span class="text-[10px] font-mono text-slate-500">SECURE STREAM</span>
+                    <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
+                        <h3 class="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-cyan-300 transition-colors">
+                            ${item.title}
+                        </h3>
+                        <div class="flex items-center justify-between text-xs text-slate-400">
+                            <span>${item.uploaderName || 'YouTube'}</span>
+                            <span>${item.uploadedDate || ''}</span>
                         </div>
                     </div>
                 `;
-                grid.appendChild(card);
+                videoGrid.appendChild(card);
             });
+            lucide.createIcons();
         }
 
-        // Filter Category
-        function filterCategory(category) {
-            currentCategory = category;
-            document.querySelectorAll('.category-btn').forEach(btn => {
-                if(btn.dataset.category === category) {
-                    btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all bg-cyan-500 text-black font-semibold shadow-lg shadow-cyan-500/20";
-                } else {
-                    btn.className = "category-btn px-4 py-2 rounded-xl text-xs font-medium tracking-wide transition-all glass-card text-slate-300 hover:text-cyan-400";
-                }
+        function renderInvidiousVideos(items) {
+            videoCount.innerText = `${items.length} Results`;
+            items.forEach(item => {
+                if(item.type !== 'video') return;
+                
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
+                card.onclick = () => playVideo(item.videoId, item.title, item.author);
+
+                const thumb = item.videoThumbnails ? item.videoThumbnails.find(t => t.quality === 'medium')?.url || item.videoThumbnails[0].url : '';
+
+                card.innerHTML = `
+                    <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
+                        <img src="${thumb}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg">
+                                <i data-lucide="play" class="w-6 h-6 fill-current"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
+                        <h3 class="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-cyan-300 transition-colors">
+                            ${item.title}
+                        </h3>
+                        <p class="text-xs text-slate-400">${item.author}</p>
+                    </div>
+                `;
+                videoGrid.appendChild(card);
             });
-            renderVideos();
+            lucide.createIcons();
         }
 
-        // Open Theater Mode Player Modal
-        function openPlayerModal(video) {
-            activeVideoId = video.id;
-            document.getElementById('modalTitle').innerText = video.title;
-            document.getElementById('modalChannel').innerText = video.channel;
-            document.getElementById('modalCategory').innerText = `CATEGORY: ${video.category.toUpperCase()}`;
-            
-            const iframe = document.getElementById('youtubeIframe');
-            iframe.src = `https://www.youtube.com/embed/${video.id}?autoplay=1&enablejsapi=1`;
+        // Play Selected Video
+        function playVideo(id, title, author) {
+            mainPlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+            playerTitle.innerText = title;
+            playerAuthor.innerText = author;
+            playerContainer.classList.remove('hidden');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
 
-            const deleteBtn = document.getElementById('deleteCustomBtn');
-            if (video.isCustom) {
-                deleteBtn.classList.remove('hidden');
+        function closePlayer() {
+            mainPlayer.src = '';
+            playerContainer.classList.add('hidden');
+        }
+
+        // Helpers
+        function showLoading(state) {
+            if(state) {
+                loadingSpinner.classList.remove('hidden');
             } else {
-                deleteBtn.classList.add('hidden');
+                loadingSpinner.classList.add('hidden');
+            }
+        }
+
+        function showError(msg) {
+            videoGrid.innerHTML = `<div class="col-span-full text-center py-12 text-red-400 font-mono">${msg}</div>`;
+        }
+
+        function formatDuration(seconds) {
+            if(!seconds) return 'HD';
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
+        }
+
+        // Direct Modal Helpers
+        function openDirectPlayModal() { document.getElementById('directModal').classList.remove('hidden'); }
+        function closeDirectPlayModal() { document.getElementById('directModal').classList.add('hidden'); }
+        
+        function playDirectUrl() {
+            const input = document.getElementById('directUrlInput').value.trim();
+            if(!input) return;
+
+            let videoId = input;
+            if(input.includes('v=')) {
+                videoId = input.split('v=')[1].split('&')[0];
+            } else if(input.includes('youtu.be/')) {
+                videoId = input.split('youtu.be/')[1].split('?')[0];
             }
 
-            const modal = document.getElementById('playerModal');
-            modal.classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        // Close Player Modal
-        function closePlayerModal() {
-            const modal = document.getElementById('playerModal');
-            modal.classList.add('hidden');
-            document.getElementById('youtubeIframe').src = '';
-            document.body.style.overflow = 'auto';
-            activeVideoId = null;
-        }
-
-        // Add Stream Modal Control
-        function openAddModal() {
-            document.getElementById('addModal').classList.remove('hidden');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeAddModal() {
-            document.getElementById('addModal').classList.add('hidden');
-            document.getElementById('addVideoForm').reset();
-            document.body.style.overflow = 'auto';
-        }
-
-        // Extract YouTube ID from URL or return ID if valid
-        function extractYouTubeId(urlOrId) {
-            if (!urlOrId) return '';
-            if (urlOrId.length === 11 && !urlOrId.includes('/') && !urlOrId.includes('.')) return urlOrId;
-            const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|\&v=)([^#\&\?]*).*/;
-            const match = urlOrId.match(regExp);
-            return (match && match[2].length === 11) ? match[2] : urlOrId;
-        }
-
-        // Handle Form Submission for Adding Custom Video
-        function handleVideoSubmit(e) {
-            e.preventDefault();
-            const rawUrl = document.getElementById('inputUrl').value;
-            const title = document.getElementById('inputTitle').value;
-            const channel = document.getElementById('inputChannel').value;
-            const category = document.getElementById('inputCategory').value;
-
-            const videoId = extractYouTubeId(rawUrl);
-
-            if (!videoId || videoId.length < 5) {
-                showToast("Invalid YouTube URL or ID", "error");
-                return;
-            }
-
-            const newVideo = {
-                id: videoId,
-                title: title,
-                channel: channel,
-                category: category,
-                isCustom: true
-            };
-
-            const custom = JSON.parse(localStorage.getItem('nexus_custom_videos') || '[]');
-            custom.unshift(newVideo);
-            localStorage.setItem('nexus_custom_videos', JSON.stringify(custom));
-
-            closeAddModal();
-            renderVideos();
-            showToast("Custom stream successfully added!");
-        }
-
-        // Delete Current Custom Video
-        function deleteCurrentCustomVideo() {
-            if (!activeVideoId) return;
-            let custom = JSON.parse(localStorage.getItem('nexus_custom_videos') || '[]');
-            custom = custom.filter(v => v.id !== activeVideoId);
-            localStorage.setItem('nexus_custom_videos', JSON.stringify(custom));
-
-            closePlayerModal();
-            renderVideos();
-            showToast("Custom stream removed.");
-        }
-
-        // Reset to default
-        function resetToDefaults() {
-            localStorage.removeItem('nexus_custom_videos');
-            renderVideos();
-            showToast("Grid reset to default streams.");
-        }
-
-        // Custom Toast Notification
-        function showToast(message, type = 'success') {
-            const toast = document.getElementById('toast');
-            const toastMessage = document.getElementById('toastMessage');
-            const toastIcon = document.getElementById('toastIcon');
-
-            toastMessage.innerText = message;
-            if(type === 'error') {
-                toastIcon.className = "fa-solid fa-triangle-exclamation text-red-400";
-            } else {
-                toastIcon.className = "fa-solid fa-circle-check text-cyan-400";
-            }
-
-            toast.classList.remove('translate-y-20', 'opacity-0');
-            toast.classList.add('translate-y-0', 'opacity-100');
-
-            setTimeout(() => {
-                toast.classList.remove('translate-y-0', 'opacity-100');
-                toast.classList.add('translate-y-20', 'opacity-0');
-            }, 3000);
+            playVideo(videoId, "Custom Stream", "Direct Playback");
+            closeDirectPlayModal();
         }
     </script>
 </body>
