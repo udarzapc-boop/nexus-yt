@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CYBER_TUBE // Next-Gen Stream Interface</title>
+    <title>CYBER_TUBE // Proxy Stream Engine</title>
     <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Lucide Icons -->
@@ -20,9 +20,7 @@
                 radial-gradient(circle at 85% 85%, rgba(255, 0, 127, 0.05) 0%, transparent 40%);
         }
 
-        .cyber-font {
-            font-family: 'Orbitron', sans-serif;
-        }
+        .cyber-font { font-family: 'Orbitron', sans-serif; }
 
         .glass-panel {
             background: rgba(13, 18, 36, 0.75);
@@ -45,9 +43,7 @@
             box-shadow: 0 10px 25px -5px rgba(0, 243, 255, 0.2);
         }
 
-        .ambient-glow {
-            box-shadow: 0 0 50px rgba(0, 243, 255, 0.25);
-        }
+        .ambient-glow { box-shadow: 0 0 50px rgba(0, 243, 255, 0.25); }
 
         ::-webkit-scrollbar { width: 6px; }
         ::-webkit-scrollbar-track { background: #060913; }
@@ -64,10 +60,10 @@
             <!-- Logo -->
             <div class="flex items-center gap-3 cursor-pointer" onclick="loadCategory('trending')">
                 <div class="p-2 bg-cyan-500/10 border border-cyan-400/30 rounded-xl text-cyan-400">
-                    <i data-lucide="play-square" class="w-6 h-6"></i>
+                    <i data-lucide="shield-check" class="w-6 h-6"></i>
                 </div>
                 <span class="cyber-font font-bold text-xl tracking-wider bg-clip-text text-transparent bg-gradient-to-r from-cyan-400 to-pink-500">
-                    CYBER<span class="text-white">_TUBE</span>
+                    CYBER<span class="text-white">_PROXY</span>
                 </span>
             </div>
 
@@ -76,7 +72,7 @@
                 <input 
                     type="text" 
                     id="searchInput" 
-                    placeholder="Search any YouTube video name..." 
+                    placeholder="Search media via bypass proxy..." 
                     class="w-full bg-slate-950/90 border border-cyan-500/30 rounded-full py-2.5 pl-11 pr-24 text-sm text-cyan-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
                 >
                 <i data-lucide="search" class="w-5 h-5 absolute left-4 top-3 text-slate-400"></i>
@@ -85,22 +81,22 @@
                 </button>
             </form>
 
-            <!-- Direct Link Button -->
+            <!-- Direct Stream ID Modal Launcher -->
             <button onclick="openDirectModal()" class="hidden md:flex items-center gap-2 px-3 py-2 bg-pink-500/10 border border-pink-500/30 text-pink-400 rounded-xl text-xs font-semibold hover:bg-pink-500/20 transition-all">
-                <i data-lucide="link" class="w-4 h-4"></i>
-                Direct Link
+                <i data-lucide="key-round" class="w-4 h-4"></i>
+                Stream Hash
             </button>
         </div>
     </header>
 
-    <!-- CATEGORY PILLS BAR -->
+    <!-- CATEGORY BAR -->
     <div class="bg-slate-950/60 border-b border-slate-800/80 px-4 py-3">
         <div class="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto no-scrollbar">
-            <button onclick="loadCategory('trending')" class="px-4 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-semibold whitespace-nowrap transition-all">🔥 Trending</button>
-            <button onclick="loadCategory('music')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎵 Hit Songs</button>
-            <button onclick="loadCategory('gaming')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎮 Gaming</button>
-            <button onclick="loadCategory('livelyrics')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎧 Lo-Fi & Beats</button>
-            <button onclick="loadCategory('tech')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">💻 Tech & Code</button>
+            <button onclick="loadCategory('trending')" class="px-4 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-semibold whitespace-nowrap transition-all">⚡ Hot Streams</button>
+            <button onclick="loadCategory('music')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎵 Music Channels</button>
+            <button onclick="loadCategory('gaming')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎮 Gaming Replays</button>
+            <button onclick="loadCategory('livelyrics')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎧 Lo-Fi Audio</button>
+            <button onclick="loadCategory('tech')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">💻 Tech Seminars</button>
         </div>
     </div>
 
@@ -114,14 +110,15 @@
                     id="mainPlayer" 
                     class="w-full h-full border-0" 
                     allowfullscreen 
+                    sandbox="allow-scripts allow-same-origin allow-presentation"
                     allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture">
                 </iframe>
             </div>
             
             <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 p-4 glass-panel rounded-2xl">
                 <div>
-                    <h1 id="playerTitle" class="text-xl font-bold text-white tracking-wide">Video Title</h1>
-                    <p id="playerAuthor" class="text-sm text-cyan-400 font-medium mt-1">Channel Name</p>
+                    <h1 id="playerTitle" class="text-xl font-bold text-white tracking-wide">Stream Active</h1>
+                    <p id="playerAuthor" class="text-sm text-cyan-400 font-medium mt-1">Encrypted Proxy Channel</p>
                 </div>
                 <button onclick="closePlayer()" class="self-start md:self-auto px-4 py-2 bg-slate-800/80 hover:bg-red-500/20 hover:text-red-400 border border-slate-700 hover:border-red-500/40 text-slate-300 rounded-xl text-xs font-semibold transition-all flex items-center gap-2">
                     <i data-lucide="x" class="w-4 h-4"></i>
@@ -133,35 +130,36 @@
         <!-- FEED HEADER -->
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
             <div class="flex items-center gap-2">
-                <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i>
-                <h2 id="feedTitle" class="cyber-font text-lg font-bold text-slate-200 tracking-wide uppercase">Curated Feed</h2>
+                <i data-lucide="radio" class="w-5 h-5 text-cyan-400 animate-pulse"></i>
+                <h2 id="feedTitle" class="cyber-font text-lg font-bold text-slate-200 tracking-wide uppercase">Proxy Stream Feed</h2>
             </div>
-            <span id="videoCount" class="text-xs text-slate-500 font-mono">Ready to Stream</span>
+            <span id="videoCount" class="text-xs text-slate-500 font-mono">Status: Connected</span>
         </div>
 
         <!-- LOADING SPINNER -->
         <div id="loadingSpinner" class="hidden flex flex-col items-center justify-center py-20 space-y-4">
             <div class="w-12 h-12 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
-            <p class="text-sm text-cyan-400/80 font-mono tracking-widest animate-pulse">CONNECTING_YT_STREAM...</p>
+            <p class="text-sm text-cyan-400/80 font-mono tracking-widest animate-pulse">TUNNELING_PROXY_STREAM...</p>
         </div>
 
         <!-- VIDEO GRID -->
         <section id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Populated via script -->
+            <!-- Populated dynamically -->
         </section>
 
     </main>
 
-    <!-- DIRECT LINK MODAL -->
+    <!-- DIRECT LINK / HASH MODAL -->
     <div id="directModal" class="fixed inset-0 bg-black/80 backdrop-blur-md z-50 hidden flex items-center justify-center p-4">
         <div class="glass-panel max-w-md w-full p-6 rounded-2xl border border-pink-500/30 space-y-4">
             <div class="flex justify-between items-center">
-                <h3 class="cyber-font font-bold text-white">PLAY VIA LINK OR ID</h3>
+                <h3 class="cyber-font font-bold text-white">PLAY VIA ID / HASH</h3>
                 <button onclick="closeDirectModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <input type="text" id="directUrlInput" placeholder="Paste YouTube Link or Video ID (e.g. dQw4w9WgXcQ)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-pink-500">
+            <p class="text-xs text-slate-400">Paste Video ID (e.g., <code>jfKfPfyJRdk</code>) or Link. YouTube domain is masked automatically.</p>
+            <input type="text" id="directUrlInput" placeholder="Enter Video ID / Link" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-pink-500">
             <button onclick="playDirectUrl()" class="w-full py-3 bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 text-pink-300 font-bold rounded-xl text-sm transition-all">
-                PLAY NOW
+                START PROXY STREAM
             </button>
         </div>
     </div>
@@ -169,6 +167,10 @@
     <!-- SCRIPT -->
     <script>
         lucide.createIcons();
+
+        // Privacy-focused Proxy Embed Mirrors (Network bypass servers)
+        const PROXY_EMBED_BASE = "https://inv.tux.pizza/embed/";
+        const PROXY_IMG_BASE = "https://inv.tux.pizza/vi/";
 
         const videoGrid = document.getElementById('videoGrid');
         const loadingSpinner = document.getElementById('loadingSpinner');
@@ -179,34 +181,27 @@
         const feedTitle = document.getElementById('feedTitle');
         const videoCount = document.getElementById('videoCount');
 
-        // Pre-curated reliable video datasets so the site works instantly on GitHub Pages without API blocks
         const presets = {
             trending: [
-                { id: 'jfKfPfyJRdk', title: 'Lofi Hip Hop Radio - Beats to Study/Relax to', author: 'Lofi Girl' },
-                { id: '5qap5aO4i9A', title: 'lofi hip hop radio - beats to sleep/chill to', author: 'Lofi Girl' },
-                { id: '9bZkp7q19f0', title: 'PSY - GANGNAM STYLE(강남스타일) M/V', author: 'officialpsy' },
-                { id: 'kJQP7kiw5Fk', title: 'Luis Fonsi - Despacito ft. Daddy Yankee', author: 'Luis Fonsi' },
-                { id: 'JGwWNGJdvx8', title: 'Ed Sheeran - Shape of You (Official Music Video)', author: 'Ed Sheeran' },
-                { id: 'RgKAFK5djSk', title: 'Wiz Khalifa - See You Again ft. Charlie Puth', author: 'Wiz Khalifa' }
+                { id: 'jfKfPfyJRdk', title: 'Lofi Hip Hop Radio - Beats to Chill', author: 'Lofi Stream' },
+                { id: '5qap5aO4i9A', title: 'Lofi Beats to Sleep / Relax', author: 'Chill Beats' },
+                { id: 'DWcJFNfaw9c', title: 'Cyberpunk Synthwave Coding Session', author: 'Cyber Sound' },
+                { id: 'TURbeWhz0u4', title: 'Ambient Cyberpunk Coding Radio', author: 'Hacker FM' }
             ],
             music: [
-                { id: 'YQHsXMglC9A', title: 'Adele - Hello (Official Music Video)', author: 'Adele' },
-                { id: 'OPf0YbXqDm0', title: 'Mark Ronson - Uptown Funk ft. Bruno Mars', author: 'MarkRonsonVEVO' },
-                { id: 'CevxZvSJLk8', title: 'Katy Perry - Roar (Official)', author: 'KatyPerryVEVO' },
-                { id: 'hT_nvWreIhg', title: 'OneRepublic - Counting Stars', author: 'OneRepublicVEVO' }
+                { id: 'YQHsXMglC9A', title: 'Global Pop Hits Collection', author: 'Music Stream' },
+                { id: 'OPf0YbXqDm0', title: 'Funk & Groove Highlights', author: 'Funk Sound' }
             ],
             gaming: [
-                { id: '36YnV9STBqc', title: 'GTA VI - Trailer 1', author: 'Rockstar Games' },
-                { id: 'QkkoVnHVz6k', title: 'Minecraft Official Live Action Trailer', author: 'Minecraft' },
-                { id: 'V1UyqIRwrq4', title: 'Cyberpunk 2077 Official Cinematic Trailer', author: 'Cyberpunk 2077' }
+                { id: '36YnV9STBqc', title: 'Next-Gen Open World Preview', author: 'Game Hub' },
+                { id: 'V1UyqIRwrq4', title: 'Sci-Fi Action Cinematic Showcase', author: 'Cinema Vault' }
             ],
             livelyrics: [
-                { id: 'DWcJFNfaw9c', title: 'Chill Coding & Cyberpunk Synthwave Radio', author: 'Synthwave Boy' },
-                { id: 'TURbeWhz0u4', title: 'Ambient Cyberpunk Music for Hacking & Coding', author: 'Cyber Radio' }
+                { id: 'DWcJFNfaw9c', title: 'Chill Out Radio 24/7', author: 'Night Beats' }
             ],
             tech: [
-                { id: 'zOjov-2OZ0E', title: 'HTML & CSS Full Course - Beginner to Pro', author: 'SuperSimpleDev' },
-                { id: 'rfscVS0vtbw', title: 'JavaScript Tutorial for Beginners: Full Course', author: 'Programming with Mosh' }
+                { id: 'zOjov-2OZ0E', title: 'Full Web Development Masterclass', author: 'Code Academy' },
+                { id: 'rfscVS0vtbw', title: 'JavaScript Architecture Basics', author: 'Dev Tech' }
             ]
         };
 
@@ -214,40 +209,14 @@
             loadCategory('trending');
         });
 
-        function loadCategory(categoryKey) {
-            feedTitle.innerText = `${categoryKey.toUpperCase()} STREAM FEED`;
-            const items = presets[categoryKey] || presets.trending;
+        function loadCategory(key) {
+            feedTitle.innerText = `${key.toUpperCase()} PROXY FEED`;
+            const items = presets[key] || presets.trending;
             renderPresetVideos(items);
         }
 
-        async function handleSearch(e) {
-            e.preventDefault();
-            const query = document.getElementById('searchInput').value.trim();
-            if (!query) return;
-
-            feedTitle.innerText = `Search Results: "${query}"`;
-            showLoading(true);
-            videoGrid.innerHTML = '';
-
-            try {
-                // Try Piped public API
-                const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query)}&filter=videos`);
-                const data = await res.json();
-                
-                if (data.items && data.items.length > 0) {
-                    renderApiVideos(data.items);
-                } else {
-                    renderFallbackSearch(query);
-                }
-            } catch (err) {
-                renderFallbackSearch(query);
-            } finally {
-                showLoading(false);
-            }
-        }
-
         function renderPresetVideos(items) {
-            videoCount.innerText = `${items.length} Streams`;
+            videoCount.innerText = `${items.length} Streams Active`;
             videoGrid.innerHTML = '';
             
             items.forEach(item => {
@@ -255,16 +224,19 @@
                 card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
                 card.onclick = () => playVideo(item.id, item.title, item.author);
 
+                // Load image from proxy mirror instead of youtube img servers
+                const proxyThumb = `${PROXY_IMG_BASE}${item.id}/hqdefault.jpg`;
+
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
-                        <img src="https://i.ytimg.com/vi/${item.id}/hqdefault.jpg" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <img src="${proxyThumb}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop'">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
                                 <i data-lucide="play" class="w-6 h-6 fill-current"></i>
                             </div>
                         </div>
                         <span class="absolute bottom-2 right-2 bg-slate-950/80 backdrop-blur-md border border-white/10 text-cyan-300 text-[10px] font-mono px-2 py-0.5 rounded-md">
-                            HD 1080p
+                            PROXY_STREAM
                         </span>
                     </div>
                     <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
@@ -279,21 +251,48 @@
             lucide.createIcons();
         }
 
-        function renderApiVideos(items) {
-            videoCount.innerText = `${items.length} Results`;
+        async function handleSearch(e) {
+            e.preventDefault();
+            const query = document.getElementById('searchInput').value.trim();
+            if (!query) return;
+
+            feedTitle.innerText = `Proxy Search: "${query}"`;
+            showLoading(true);
+            videoGrid.innerHTML = '';
+
+            try {
+                // Fetch search using Invidious CORS bypass API
+                const res = await fetch(`https://inv.tux.pizza/api/v1/search?q=${encodeURIComponent(query)}`);
+                const data = await res.json();
+                
+                if (data && data.length > 0) {
+                    renderProxySearchResults(data);
+                } else {
+                    showError("No media streams found.");
+                }
+            } catch (err) {
+                showError("Proxy Search Routing Offline. Use Direct Stream Hash.");
+            } finally {
+                showLoading(false);
+            }
+        }
+
+        function renderProxySearchResults(items) {
+            videoCount.innerText = `${items.length} Streams Found`;
             videoGrid.innerHTML = '';
 
             items.forEach(item => {
-                if(!item.url) return;
-                const videoId = item.url.replace('/watch?v=', '');
+                if(item.type !== 'video') return;
                 
                 const card = document.createElement('div');
                 card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
-                card.onclick = () => playVideo(videoId, item.title, item.uploaderName || 'YouTube Creator');
+                card.onclick = () => playVideo(item.videoId, item.title, item.author);
+
+                const thumb = `${PROXY_IMG_BASE}${item.videoId}/hqdefault.jpg`;
 
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
-                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <img src="${thumb}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?w=600&auto=format&fit=crop'">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg">
                                 <i data-lucide="play" class="w-6 h-6 fill-current"></i>
@@ -304,7 +303,7 @@
                         <h3 class="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-cyan-300 transition-colors">
                             ${item.title}
                         </h3>
-                        <p class="text-xs text-slate-400">${item.uploaderName || 'YouTube'}</p>
+                        <p class="text-xs text-slate-400">${item.author}</p>
                     </div>
                 `;
                 videoGrid.appendChild(card);
@@ -312,17 +311,9 @@
             lucide.createIcons();
         }
 
-        function renderFallbackSearch(query) {
-            videoGrid.innerHTML = `
-                <div class="col-span-full glass-panel p-8 rounded-2xl text-center space-y-4">
-                    <p class="text-cyan-300 font-mono text-sm">Direct search blocked by network CORS policy on GitHub Pages.</p>
-                    <p class="text-slate-400 text-xs">No worries! You can play any video instantly by copying its YouTube link and clicking the <span class="text-pink-400 font-bold">Direct Link</span> button above.</p>
-                </div>
-            `;
-        }
-
+        // Play Video via Proxy Mirror Iframe (Bypasses YouTube block)
         function playVideo(id, title, author) {
-            mainPlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
+            mainPlayer.src = `${PROXY_EMBED_BASE}${id}?autoplay=1`;
             playerTitle.innerText = title;
             playerAuthor.innerText = author;
             playerContainer.classList.remove('hidden');
@@ -339,6 +330,10 @@
             else loadingSpinner.classList.add('hidden');
         }
 
+        function showError(msg) {
+            videoGrid.innerHTML = `<div class="col-span-full glass-panel p-8 text-center text-cyan-300 font-mono text-sm">${msg}</div>`;
+        }
+
         function openDirectModal() { document.getElementById('directModal').classList.remove('hidden'); }
         function closeDirectModal() { document.getElementById('directModal').classList.add('hidden'); }
         
@@ -351,9 +346,11 @@
                 videoId = input.split('v=')[1].split('&')[0];
             } else if(input.includes('youtu.be/')) {
                 videoId = input.split('youtu.be/')[1].split('?')[0];
+            } else if(input.includes('/embed/')) {
+                videoId = input.split('/embed/')[1].split('?')[0];
             }
 
-            playVideo(videoId, "Custom Stream", "Direct Playback");
+            playVideo(videoId, "Custom Proxy Stream", "Decrypted Stream");
             closeDirectModal();
         }
     </script>
