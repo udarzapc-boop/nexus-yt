@@ -25,7 +25,7 @@
         }
 
         .glass-panel {
-            background: rgba(13, 18, 36, 0.65);
+            background: rgba(13, 18, 36, 0.75);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
             border: 1px solid rgba(0, 243, 255, 0.15);
@@ -33,7 +33,7 @@
         }
 
         .glass-card {
-            background: rgba(22, 30, 56, 0.5);
+            background: rgba(22, 30, 56, 0.6);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.05);
             transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
@@ -49,20 +49,10 @@
             box-shadow: 0 0 50px rgba(0, 243, 255, 0.25);
         }
 
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #060913;
-        }
-        ::-webkit-scrollbar-thumb {
-            background: #1e293b;
-            border-radius: 3px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: #00f3ff;
-        }
+        ::-webkit-scrollbar { width: 6px; }
+        ::-webkit-scrollbar-track { background: #060913; }
+        ::-webkit-scrollbar-thumb { background: #1e293b; border-radius: 3px; }
+        ::-webkit-scrollbar-thumb:hover { background: #00f3ff; }
     </style>
 </head>
 <body class="min-h-screen flex flex-col">
@@ -72,7 +62,7 @@
         <div class="max-w-7xl mx-auto flex items-center justify-between gap-4">
             
             <!-- Logo -->
-            <div class="flex items-center gap-3 cursor-pointer" onclick="loadTrending()">
+            <div class="flex items-center gap-3 cursor-pointer" onclick="loadCategory('trending')">
                 <div class="p-2 bg-cyan-500/10 border border-cyan-400/30 rounded-xl text-cyan-400">
                     <i data-lucide="play-square" class="w-6 h-6"></i>
                 </div>
@@ -86,8 +76,8 @@
                 <input 
                     type="text" 
                     id="searchInput" 
-                    placeholder="Search YouTube videos, music, gaming..." 
-                    class="w-full bg-slate-950/80 border border-cyan-500/30 rounded-full py-2.5 pl-11 pr-24 text-sm text-cyan-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
+                    placeholder="Search any YouTube video name..." 
+                    class="w-full bg-slate-950/90 border border-cyan-500/30 rounded-full py-2.5 pl-11 pr-24 text-sm text-cyan-100 placeholder-slate-500 focus:outline-none focus:border-cyan-400 focus:ring-1 focus:ring-cyan-400 transition-all"
                 >
                 <i data-lucide="search" class="w-5 h-5 absolute left-4 top-3 text-slate-400"></i>
                 <button type="submit" class="absolute right-1.5 top-1.5 px-4 py-1.5 bg-cyan-500/20 hover:bg-cyan-500/30 border border-cyan-400/40 text-cyan-300 rounded-full text-xs font-semibold tracking-wider uppercase transition-all">
@@ -95,20 +85,29 @@
                 </button>
             </form>
 
-            <!-- Quick Stats/Actions -->
-            <div class="hidden md:flex items-center gap-3">
-                <button onclick="openDirectPlayModal()" class="flex items-center gap-2 px-3 py-2 bg-pink-500/10 border border-pink-500/30 text-pink-400 rounded-xl text-xs font-semibold hover:bg-pink-500/20 transition-all">
-                    <i data-lucide="link" class="w-4 h-4"></i>
-                    Direct Link
-                </button>
-            </div>
+            <!-- Direct Link Button -->
+            <button onclick="openDirectModal()" class="hidden md:flex items-center gap-2 px-3 py-2 bg-pink-500/10 border border-pink-500/30 text-pink-400 rounded-xl text-xs font-semibold hover:bg-pink-500/20 transition-all">
+                <i data-lucide="link" class="w-4 h-4"></i>
+                Direct Link
+            </button>
         </div>
     </header>
+
+    <!-- CATEGORY PILLS BAR -->
+    <div class="bg-slate-950/60 border-b border-slate-800/80 px-4 py-3">
+        <div class="max-w-7xl mx-auto flex items-center gap-3 overflow-x-auto no-scrollbar">
+            <button onclick="loadCategory('trending')" class="px-4 py-1.5 rounded-xl bg-cyan-500/20 border border-cyan-500/40 text-cyan-300 text-xs font-semibold whitespace-nowrap transition-all">🔥 Trending</button>
+            <button onclick="loadCategory('music')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎵 Hit Songs</button>
+            <button onclick="loadCategory('gaming')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎮 Gaming</button>
+            <button onclick="loadCategory('livelyrics')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">🎧 Lo-Fi & Beats</button>
+            <button onclick="loadCategory('tech')" class="px-4 py-1.5 rounded-xl bg-slate-900 border border-slate-800 hover:border-cyan-500/30 text-slate-300 text-xs font-semibold whitespace-nowrap transition-all">💻 Tech & Code</button>
+        </div>
+    </div>
 
     <!-- MAIN CONTAINER -->
     <main class="flex-1 max-w-7xl w-full mx-auto p-4 lg:p-8 space-y-6">
 
-        <!-- THEATER / PLAYER SECTION (Hidden until video click) -->
+        <!-- THEATER / PLAYER SECTION -->
         <section id="playerContainer" class="hidden space-y-4">
             <div class="relative w-full aspect-video rounded-2xl overflow-hidden glass-panel border border-cyan-500/40 ambient-glow">
                 <iframe 
@@ -135,20 +134,20 @@
         <div class="flex items-center justify-between border-b border-slate-800 pb-4">
             <div class="flex items-center gap-2">
                 <i data-lucide="sparkles" class="w-5 h-5 text-cyan-400"></i>
-                <h2 id="feedTitle" class="cyber-font text-lg font-bold text-slate-200 tracking-wide uppercase">Featured Feed</h2>
+                <h2 id="feedTitle" class="cyber-font text-lg font-bold text-slate-200 tracking-wide uppercase">Curated Feed</h2>
             </div>
-            <span id="videoCount" class="text-xs text-slate-500 font-mono">0 Videos</span>
+            <span id="videoCount" class="text-xs text-slate-500 font-mono">Ready to Stream</span>
         </div>
 
-        <!-- LOADING INDICATOR -->
+        <!-- LOADING SPINNER -->
         <div id="loadingSpinner" class="hidden flex flex-col items-center justify-center py-20 space-y-4">
             <div class="w-12 h-12 border-4 border-cyan-500/20 border-t-cyan-400 rounded-full animate-spin"></div>
-            <p class="text-sm text-cyan-400/80 font-mono tracking-widest animate-pulse">FETCHING_YT_DATA...</p>
+            <p class="text-sm text-cyan-400/80 font-mono tracking-widest animate-pulse">CONNECTING_YT_STREAM...</p>
         </div>
 
         <!-- VIDEO GRID -->
         <section id="videoGrid" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            <!-- Dynamic Video Cards will render here -->
+            <!-- Populated via script -->
         </section>
 
     </main>
@@ -158,9 +157,9 @@
         <div class="glass-panel max-w-md w-full p-6 rounded-2xl border border-pink-500/30 space-y-4">
             <div class="flex justify-between items-center">
                 <h3 class="cyber-font font-bold text-white">PLAY VIA LINK OR ID</h3>
-                <button onclick="closeDirectPlayModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
+                <button onclick="closeDirectModal()" class="text-slate-400 hover:text-white"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
-            <input type="text" id="directUrlInput" placeholder="Paste YouTube Link or Video ID" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-pink-500">
+            <input type="text" id="directUrlInput" placeholder="Paste YouTube Link or Video ID (e.g. dQw4w9WgXcQ)" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-pink-500">
             <button onclick="playDirectUrl()" class="w-full py-3 bg-pink-500/20 hover:bg-pink-500/30 border border-pink-500/40 text-pink-300 font-bold rounded-xl text-sm transition-all">
                 PLAY NOW
             </button>
@@ -169,7 +168,6 @@
 
     <!-- SCRIPT -->
     <script>
-        // Initialize Lucide Icons
         lucide.createIcons();
 
         const videoGrid = document.getElementById('videoGrid');
@@ -181,112 +179,93 @@
         const feedTitle = document.getElementById('feedTitle');
         const videoCount = document.getElementById('videoCount');
 
-        // Initial Load
+        // Pre-curated reliable video datasets so the site works instantly on GitHub Pages without API blocks
+        const presets = {
+            trending: [
+                { id: 'jfKfPfyJRdk', title: 'Lofi Hip Hop Radio - Beats to Study/Relax to', author: 'Lofi Girl' },
+                { id: '5qap5aO4i9A', title: 'lofi hip hop radio - beats to sleep/chill to', author: 'Lofi Girl' },
+                { id: '9bZkp7q19f0', title: 'PSY - GANGNAM STYLE(강남스타일) M/V', author: 'officialpsy' },
+                { id: 'kJQP7kiw5Fk', title: 'Luis Fonsi - Despacito ft. Daddy Yankee', author: 'Luis Fonsi' },
+                { id: 'JGwWNGJdvx8', title: 'Ed Sheeran - Shape of You (Official Music Video)', author: 'Ed Sheeran' },
+                { id: 'RgKAFK5djSk', title: 'Wiz Khalifa - See You Again ft. Charlie Puth', author: 'Wiz Khalifa' }
+            ],
+            music: [
+                { id: 'YQHsXMglC9A', title: 'Adele - Hello (Official Music Video)', author: 'Adele' },
+                { id: 'OPf0YbXqDm0', title: 'Mark Ronson - Uptown Funk ft. Bruno Mars', author: 'MarkRonsonVEVO' },
+                { id: 'CevxZvSJLk8', title: 'Katy Perry - Roar (Official)', author: 'KatyPerryVEVO' },
+                { id: 'hT_nvWreIhg', title: 'OneRepublic - Counting Stars', author: 'OneRepublicVEVO' }
+            ],
+            gaming: [
+                { id: '36YnV9STBqc', title: 'GTA VI - Trailer 1', author: 'Rockstar Games' },
+                { id: 'QkkoVnHVz6k', title: 'Minecraft Official Live Action Trailer', author: 'Minecraft' },
+                { id: 'V1UyqIRwrq4', title: 'Cyberpunk 2077 Official Cinematic Trailer', author: 'Cyberpunk 2077' }
+            ],
+            livelyrics: [
+                { id: 'DWcJFNfaw9c', title: 'Chill Coding & Cyberpunk Synthwave Radio', author: 'Synthwave Boy' },
+                { id: 'TURbeWhz0u4', title: 'Ambient Cyberpunk Music for Hacking & Coding', author: 'Cyber Radio' }
+            ],
+            tech: [
+                { id: 'zOjov-2OZ0E', title: 'HTML & CSS Full Course - Beginner to Pro', author: 'SuperSimpleDev' },
+                { id: 'rfscVS0vtbw', title: 'JavaScript Tutorial for Beginners: Full Course', author: 'Programming with Mosh' }
+            ]
+        };
+
         document.addEventListener('DOMContentLoaded', () => {
-            loadTrending();
+            loadCategory('trending');
         });
 
-        // Search Handler
+        function loadCategory(categoryKey) {
+            feedTitle.innerText = `${categoryKey.toUpperCase()} STREAM FEED`;
+            const items = presets[categoryKey] || presets.trending;
+            renderPresetVideos(items);
+        }
+
         async function handleSearch(e) {
             e.preventDefault();
             const query = document.getElementById('searchInput').value.trim();
             if (!query) return;
 
-            feedTitle.innerText = `Search: "${query}"`;
-            fetchYouTubeVideos(query);
-        }
-
-        // Default Trending/Popular Fetcher (Using Invidious Public API Endpoint)
-        async function loadTrending() {
-            feedTitle.innerText = "Trending Feeds";
-            fetchYouTubeVideos("Trending Music Gaming 2026");
-        }
-
-        // Core YouTube Fetch Engine
-        async function fetchYouTubeVideos(query) {
+            feedTitle.innerText = `Search Results: "${query}"`;
             showLoading(true);
             videoGrid.innerHTML = '';
 
             try {
-                // Public Piped / Invidious API Fallback network
+                // Try Piped public API
                 const res = await fetch(`https://pipedapi.kavin.rocks/search?q=${encodeURIComponent(query)}&filter=videos`);
                 const data = await res.json();
                 
                 if (data.items && data.items.length > 0) {
-                    renderVideos(data.items);
+                    renderApiVideos(data.items);
                 } else {
-                    fallbackSearch(query);
+                    renderFallbackSearch(query);
                 }
             } catch (err) {
-                // Secondary Fallback Network
-                try {
-                    const res = await fetch(`https://invidious.io.lol/api/v1/search?q=${encodeURIComponent(query)}`);
-                    const data = await res.json();
-                    renderInvidiousVideos(data);
-                } catch (e) {
-                    showError("Unable to load search results. Please try again.");
-                }
+                renderFallbackSearch(query);
             } finally {
                 showLoading(false);
             }
         }
 
-        function renderVideos(items) {
-            videoCount.innerText = `${items.length} Results`;
+        function renderPresetVideos(items) {
+            videoCount.innerText = `${items.length} Streams`;
+            videoGrid.innerHTML = '';
+            
             items.forEach(item => {
-                if(!item.url) return;
-                const videoId = item.url.replace('/watch?v=', '');
-                
                 const card = document.createElement('div');
                 card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
-                card.onclick = () => playVideo(videoId, item.title, item.uploaderName || 'YouTube Creator');
+                card.onclick = () => playVideo(item.id, item.title, item.author);
 
                 card.innerHTML = `
                     <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
-                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <img src="https://i.ytimg.com/vi/${item.id}/hqdefault.jpg" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
                         <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
                             <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg transform translate-y-2 group-hover:translate-y-0 transition-transform">
                                 <i data-lucide="play" class="w-6 h-6 fill-current"></i>
                             </div>
                         </div>
                         <span class="absolute bottom-2 right-2 bg-slate-950/80 backdrop-blur-md border border-white/10 text-cyan-300 text-[10px] font-mono px-2 py-0.5 rounded-md">
-                            ${formatDuration(item.duration)}
+                            HD 1080p
                         </span>
-                    </div>
-                    <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
-                        <h3 class="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-cyan-300 transition-colors">
-                            ${item.title}
-                        </h3>
-                        <div class="flex items-center justify-between text-xs text-slate-400">
-                            <span>${item.uploaderName || 'YouTube'}</span>
-                            <span>${item.uploadedDate || ''}</span>
-                        </div>
-                    </div>
-                `;
-                videoGrid.appendChild(card);
-            });
-            lucide.createIcons();
-        }
-
-        function renderInvidiousVideos(items) {
-            videoCount.innerText = `${items.length} Results`;
-            items.forEach(item => {
-                if(item.type !== 'video') return;
-                
-                const card = document.createElement('div');
-                card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
-                card.onclick = () => playVideo(item.videoId, item.title, item.author);
-
-                const thumb = item.videoThumbnails ? item.videoThumbnails.find(t => t.quality === 'medium')?.url || item.videoThumbnails[0].url : '';
-
-                card.innerHTML = `
-                    <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
-                        <img src="${thumb}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
-                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
-                            <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg">
-                                <i data-lucide="play" class="w-6 h-6 fill-current"></i>
-                            </div>
-                        </div>
                     </div>
                     <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
                         <h3 class="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-cyan-300 transition-colors">
@@ -300,7 +279,48 @@
             lucide.createIcons();
         }
 
-        // Play Selected Video
+        function renderApiVideos(items) {
+            videoCount.innerText = `${items.length} Results`;
+            videoGrid.innerHTML = '';
+
+            items.forEach(item => {
+                if(!item.url) return;
+                const videoId = item.url.replace('/watch?v=', '');
+                
+                const card = document.createElement('div');
+                card.className = "glass-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col";
+                card.onclick = () => playVideo(videoId, item.title, item.uploaderName || 'YouTube Creator');
+
+                card.innerHTML = `
+                    <div class="relative aspect-video w-full overflow-hidden bg-slate-950">
+                        <img src="${item.thumbnail}" alt="${item.title}" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500" loading="lazy">
+                        <div class="absolute inset-0 bg-gradient-to-t from-slate-950/80 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center">
+                            <div class="p-3 bg-cyan-500/80 text-black rounded-full shadow-lg">
+                                <i data-lucide="play" class="w-6 h-6 fill-current"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="p-4 flex-1 flex flex-col justify-between space-y-2">
+                        <h3 class="text-sm font-semibold text-slate-100 line-clamp-2 group-hover:text-cyan-300 transition-colors">
+                            ${item.title}
+                        </h3>
+                        <p class="text-xs text-slate-400">${item.uploaderName || 'YouTube'}</p>
+                    </div>
+                `;
+                videoGrid.appendChild(card);
+            });
+            lucide.createIcons();
+        }
+
+        function renderFallbackSearch(query) {
+            videoGrid.innerHTML = `
+                <div class="col-span-full glass-panel p-8 rounded-2xl text-center space-y-4">
+                    <p class="text-cyan-300 font-mono text-sm">Direct search blocked by network CORS policy on GitHub Pages.</p>
+                    <p class="text-slate-400 text-xs">No worries! You can play any video instantly by copying its YouTube link and clicking the <span class="text-pink-400 font-bold">Direct Link</span> button above.</p>
+                </div>
+            `;
+        }
+
         function playVideo(id, title, author) {
             mainPlayer.src = `https://www.youtube.com/embed/${id}?autoplay=1&rel=0`;
             playerTitle.innerText = title;
@@ -314,29 +334,13 @@
             playerContainer.classList.add('hidden');
         }
 
-        // Helpers
         function showLoading(state) {
-            if(state) {
-                loadingSpinner.classList.remove('hidden');
-            } else {
-                loadingSpinner.classList.add('hidden');
-            }
+            if(state) loadingSpinner.classList.remove('hidden');
+            else loadingSpinner.classList.add('hidden');
         }
 
-        function showError(msg) {
-            videoGrid.innerHTML = `<div class="col-span-full text-center py-12 text-red-400 font-mono">${msg}</div>`;
-        }
-
-        function formatDuration(seconds) {
-            if(!seconds) return 'HD';
-            const mins = Math.floor(seconds / 60);
-            const secs = seconds % 60;
-            return `${mins}:${secs < 10 ? '0' : ''}${secs}`;
-        }
-
-        // Direct Modal Helpers
-        function openDirectPlayModal() { document.getElementById('directModal').classList.remove('hidden'); }
-        function closeDirectPlayModal() { document.getElementById('directModal').classList.add('hidden'); }
+        function openDirectModal() { document.getElementById('directModal').classList.remove('hidden'); }
+        function closeDirectModal() { document.getElementById('directModal').classList.add('hidden'); }
         
         function playDirectUrl() {
             const input = document.getElementById('directUrlInput').value.trim();
@@ -350,7 +354,7 @@
             }
 
             playVideo(videoId, "Custom Stream", "Direct Playback");
-            closeDirectPlayModal();
+            closeDirectModal();
         }
     </script>
 </body>
